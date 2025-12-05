@@ -1,0 +1,10 @@
+<div class="carousel-container">
+  <div class="cards-wrapper">
+    <app-image-card 
+      *ngFor="let pet of pets"
+      [imageUrl]="pet.photoUrl || 'assets/images/cat1.jpg'"
+      [label]="pet.name">
+    </app-image-card>
+
+  </div>
+</div>

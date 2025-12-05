@@ -1,0 +1,18 @@
+.carousel-container {
+  overflow-x: auto;
+  padding: 1rem 0;
+}
+
+.cards-wrapper {
+  display: flex;
+  gap: 16px;
+}
+
+.cards-wrapper::-webkit-scrollbar {
+  height: 8px;
+}
+
+.cards-wrapper::-webkit-scrollbar-thumb {
+  background-color: rgba(0, 0, 0, 0.3);
+  border-radius: 4px;
+}
