@@ -70,7 +70,7 @@ jobs:
 
       - name: Deploy frontend to S3
         run: |
-          aws s3 sync ./angular-client/dist/angular-client s3://petstore-frontend-adoreal --delete
+          aws s3 sync ./angular-client/dist/angular-client s3://petstore-frontend-adoreal --delete --exact-timestamps
         env:
           AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
