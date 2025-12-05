@@ -29,7 +29,7 @@ jobs:
         working-directory: ./angular-client
 
       - name: Deploy frontend to S3
-        uses: aws-actions/s3-sync@v2.1.2
+        uses: aws-actions/s3-sync@v1.0.2
         with:
           source-dir: ./angular-client/dist/angular-client
           bucket: petstore-frontend-adoreal
