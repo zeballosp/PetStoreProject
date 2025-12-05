@@ -72,9 +72,9 @@ jobs:
       - name: Upload Angular artifacts to S3 root
         working-directory: ./angular-client/dist_s3/browser/
         run: |
-          aws s3 cp index.html s3://petstore-frontend-adoreal/index.html
-          aws s3 cp main*.js s3://petstore-frontend-adoreal/
-          aws s3 cp styles*.css s3://petstore-frontend-adoreal/
+          aws s3 cp index.html s3://petstore-frontend-adoreal
+          aws s3 cp main*.js s3://petstore-frontend-adoreal
+          aws s3 cp styles*.css s3://petstore-frontend-adoreal
         env:
           AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
