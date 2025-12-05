@@ -112,8 +112,8 @@ jobs:
           environment_name: petstorebackend-dev
           version_label: github-${{ github.run_id }}
           region: sa-east-1
-          bucket_name: petstore-frontend-adoreal
-          bucket_key: pet-microservice-${{ github.run_id }}.zip
+          existing_bucket_name: petstore-frontend-adoreal
+          # bucket_key: pet-microservice-${{ github.run_id }}.zip
           deployment_package: ./publish
         env:
           AWS_ACCESS_KEY: ${{ secrets.AWS_ACCESS_KEY_ID }}
