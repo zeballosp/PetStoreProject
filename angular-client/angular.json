@@ -24,7 +24,9 @@
             ],
             "styles": [
               "src/styles.css"
-            ]
+            ],
+            "outputPath": "dist_s3",
+            "baseHref": "/"
           },
           "configurations": {
             "production": {

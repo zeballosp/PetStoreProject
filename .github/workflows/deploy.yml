@@ -59,19 +59,18 @@ jobs:
         working-directory: ./angular-client
 
       - name: Build Angular
-        run: ng build
+        run: ng build --output-path dist_s3 --base-href /
         working-directory: ./angular-client
 
-      - name: Deploy frontend to S3
-        run: |
-          # Detect the actual output folder
-          DIST_DIR=$(ls ./angular-client/dist)
-          echo "Build folder detected: $DIST_DIR"
-          
-          # Sync its contents to the bucket root
-          aws s3 sync ./angular-client/dist/$DIST_DIR/ s3://petstore-frontend-adoreal --delete --exact-timestamps
+      - name: Clean old files in S3 bucket
+        run: aws s3 rm s3://petstore-frontend-adoreal --recursive
+        env:
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          AWS_DEFAULT_REGION: sa-east-1
 
-          # aws s3 sync ./angular-client/dist/angular-client s3://petstore-frontend-adoreal --delete --exact-timestamps
+      - name: Deploy frontend to S3
+        run: aws s3 sync ./angular-client/dist_s3/ s3://petstore-frontend-adoreal --exact-timestamps
         env:
           AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
