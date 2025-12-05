@@ -69,6 +69,16 @@ jobs:
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           AWS_DEFAULT_REGION: sa-east-1
 
+      - name: Copy only index.html, main*.js, styles*.css to S3 root
+        run: |
+          aws s3 cp ./angular-client/dist_s3/index.html s3://petstore-frontend-adoreal/index.html
+          aws s3 cp ./angular-client/dist_s3/main*.js s3://petstore-frontend-adoreal/
+          aws s3 cp ./angular-client/dist_s3/styles*.css s3://petstore-frontend-adoreal/
+        env:
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          AWS_DEFAULT_REGION: sa-east-1
+
       - name: Deploy frontend to S3
         run: aws s3 sync ./angular-client/dist_s3/ s3://petstore-frontend-adoreal --delete --exact-timestamps
         env:
