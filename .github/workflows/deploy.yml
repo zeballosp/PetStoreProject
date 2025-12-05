@@ -115,6 +115,8 @@ jobs:
           existing_bucket_name: petstore-frontend-adoreal
           # bucket_key: pet-microservice-${{ github.run_id }}.zip
           deployment_package: ./publish
+          aws_access_key: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws_secret_key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
         env:
           AWS_ACCESS_KEY: ${{ secrets.AWS_ACCESS_KEY_ID }}
           AWS_SECRET_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
