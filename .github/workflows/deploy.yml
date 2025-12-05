@@ -28,16 +28,16 @@ jobs:
         run: ng build
         working-directory: ./angular-client
 
-      # - name: Deploy frontend to S3
-      #   uses: aws-actions/s3-sync@v1.0.2
-      #   with:
-      #     source-dir: ./angular-client/dist/angular-client
-      #     bucket: petstore-frontend-adoreal
-      #     delete: true
-      #   env:
-      #     AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
-      #     AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-      #     AWS_REGION: sa-east-1
+      - name: Deploy frontend to S3
+        uses: aws-actions/s3-sync@v1.0.2
+        with:
+          source-dir: ./angular-client/dist/angular-client
+          bucket: petstore-frontend-adoreal
+          delete: true
+        env:
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          AWS_REGION: sa-east-1
 
 
   backend:
