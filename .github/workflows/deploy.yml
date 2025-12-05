@@ -40,41 +40,41 @@ jobs:
   #         AWS_REGION: sa-east-1
 
 
-frontend:
-  name: Deploy Angular to S3
-  runs-on: ubuntu-latest
-  steps:
-    - uses: actions/checkout@v3
+  frontend:
+    name: Deploy Angular to S3
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
 
-    - name: Setup Node.js
-      uses: actions/setup-node@v3
-      with:
-        node-version: '20'
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '20'
 
-    - name: Install Angular CLI
-      run: npm install -g @angular/cli
+      - name: Install Angular CLI
+        run: npm install -g @angular/cli
 
-    - name: Install dependencies
-      run: npm install
-      working-directory: ./angular-client
+      - name: Install dependencies
+        run: npm install
+        working-directory: ./angular-client
 
-    - name: Build Angular
-      run: ng build
-      working-directory: ./angular-client
+      - name: Build Angular
+        run: ng build
+        working-directory: ./angular-client
 
-    - name: Install AWS CLI
-      run: |
-        curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
-        unzip awscliv2.zip
-        sudo ./aws/install
+      - name: Install AWS CLI
+        run: |
+          curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
+          unzip awscliv2.zip
+          sudo ./aws/install
 
-    - name: Deploy frontend to S3
-      run: |
-        aws s3 sync ./angular-client/dist/angular-client s3://petstore-frontend-adoreal --delete
-      env:
-        AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
-        AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-        AWS_DEFAULT_REGION: sa-east-1
+      - name: Deploy frontend to S3
+        run: |
+          aws s3 sync ./angular-client/dist/angular-client s3://petstore-frontend-adoreal --delete
+        env:
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          AWS_DEFAULT_REGION: sa-east-1
 
   backend:
     name: Deploy .NET to Elastic Beanstalk
