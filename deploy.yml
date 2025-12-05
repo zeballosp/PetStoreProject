@@ -1,0 +1,72 @@
+name: Deploy PetstoreProject
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  frontend:
+    name: Deploy Angular to S3
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v3
+        with:
+          node-version: '20'
+
+      - name: Install Angular CLI
+        run: npm install -g @angular/cli
+
+      - name: Install frontend dependencies
+        run: npm ci
+        working-directory: ./angular-client
+
+      - name: Build Angular
+        run: ng build --prod
+        working-directory: ./angular-client
+
+      - name: Deploy frontend to S3
+        uses: aws-actions/s3-sync@v2
+        with:
+          source-dir: ./angular-client/dist/angular-client
+          bucket: petstore-frontend-adoreal
+          delete: true
+        env:
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          AWS_REGION: sa-east-1
+
+  backend:
+    name: Deploy .NET to Elastic Beanstalk
+    runs-on: ubuntu-latest
+    needs: frontend
+    steps:
+      - uses: actions/checkout@v3
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v3
+        with:
+          dotnet-version: '8.0.x'
+
+      - name: Restore backend dependencies
+        run: dotnet restore ./pet-microservice/pet-microservice.csproj
+
+      - name: Build and publish backend
+        run: dotnet publish ./pet-microservice/pet-microservice.csproj -c Release -o ./publish
+
+      - name: Deploy backend to Elastic Beanstalk
+        uses: einaregilsson/beanstalk-deploy@v22
+        with:
+          application_name: PetstoreBackend
+          environment_name: petstorebackend-dev
+          version_label: github-${{ github.run_id }}
+          region: sa-east-1
+          bucket_name: petstore-frontend-adoreal
+          bucket_key: pet-microservice-${{ github.run_id }}.zip
+          deployment_package: ./publish
+        env:
+          AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
