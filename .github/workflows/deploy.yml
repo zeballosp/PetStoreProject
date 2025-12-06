@@ -117,6 +117,7 @@ jobs:
           region: sa-east-1
           # bucket_key: pet-microservice-${{ github.run_id }}.zip
           deployment_package: publish.zip
+          wait_for_deployment: false
           aws_access_key: ${{ secrets.AWS_ACCESS_KEY_ID }}
           aws_secret_key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
         env:
