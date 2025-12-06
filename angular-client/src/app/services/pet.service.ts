@@ -2,10 +2,11 @@ import { Injectable } from '@angular/core';
 import { HttpClient } from '@angular/common/http';
 import { Pet } from '../models/pet';
 import { Observable } from 'rxjs';
+import { environment } from '../../environments/environment';
 
 @Injectable({ providedIn: 'root' })
 export class PetService {
-  private apiUrl = 'https://localhost:5000/pets';
+  private apiUrl = environment.apiUrl + '/pets';
 
   constructor(private http: HttpClient) {}
 
