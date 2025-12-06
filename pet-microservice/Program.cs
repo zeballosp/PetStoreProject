@@ -36,7 +36,7 @@ if (!builder.Environment.IsDevelopment())
     {
         options.AddPolicy(prodCorsPolicy, policy =>
         {
-            policy.WithOrigins("https://myapp.com") // <-- replace with your actual production frontend
+            policy.WithOrigins("http://petstore-frontend-adoreal.s3-website-sa-east-1.amazonaws.com") // <-- replace with your actual production frontend
                   .AllowAnyHeader()
                   .AllowAnyMethod();
         });
@@ -50,17 +50,21 @@ if (app.Environment.IsDevelopment())
 {
     app.UseSwagger();
     app.UseSwaggerUI();
+    app.UseHttpsRedirection();
 
     // Use development CORS policy
     app.UseCors(devCorsPolicy);
 }
 else
 {
+    // EB sets PORT env variable; default to 5000 if not set
+    var port = Environment.GetEnvironmentVariable("PORT") ?? "5000";
+    app.Urls.Add($"http://*:{port}");
     // Use production CORS policy
     app.UseCors(prodCorsPolicy);
 }
 
-app.UseHttpsRedirection();
+
 
 app.UseAuthorization();
 
