@@ -105,6 +105,9 @@ jobs:
       - name: Build and publish backend
         run: dotnet publish ./pet-microservice/pet-microservice.csproj -c Release -o ./publish
 
+      - name: Zip publish folder
+        run: zip -r publish.zip ./publish
+
       - name: Deploy backend to Elastic Beanstalk
         uses: einaregilsson/beanstalk-deploy@v22
         with:
@@ -113,7 +116,7 @@ jobs:
           version_label: github-${{ github.run_id }}
           region: sa-east-1
           # bucket_key: pet-microservice-${{ github.run_id }}.zip
-          deployment_package: ./publish
+          deployment_package: publish.zip
           aws_access_key: ${{ secrets.AWS_ACCESS_KEY_ID }}
           aws_secret_key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
         env:
